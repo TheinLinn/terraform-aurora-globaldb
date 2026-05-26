@@ -89,3 +89,48 @@ resource "aws_route_table_association" "public_a" {
   subnet_id      = aws_subnet.public_a.id
   route_table_id = aws_route_table.public.id
 }
+
+# create public subnet for dr bastion host
+resource "aws_subnet" "dr_public_a" {
+  provider = aws.dr
+
+  vpc_id                  = aws_vpc.dr.id
+  cidr_block              = "10.20.100.0/24"
+  availability_zone       = "ap-northeast-1a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "dr-public-subnet-a"
+  }
+}
+
+# create internet gateway for dr bastion host
+resource "aws_internet_gateway" "dr_igw" {
+  provider = aws.dr
+
+  vpc_id = aws_vpc.dr.id
+
+  tags = {
+    Name = "dr-igw"
+  }
+}
+
+# create public route table for dr bastion host
+resource "aws_route_table" "dr_public" {
+  provider = aws.dr
+
+  vpc_id = aws_vpc.dr.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.dr_igw.id
+  }
+}
+
+# to associate route table for dr bastion host
+resource "aws_route_table_association" "dr_public_a" {
+  provider = aws.dr
+
+  subnet_id      = aws_subnet.dr_public_a.id
+  route_table_id = aws_route_table.dr_public.id
+}
