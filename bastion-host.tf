@@ -1,3 +1,4 @@
+/*
 # Primary Bastion host (Amazon Linux OS)
 resource "aws_instance" "bastion" {
   ami                    = "ami-05b741ae2ab9f1742"
@@ -34,3 +35,4 @@ resource "aws_instance" "dr_bastion" {
     Name = "dr-bastion"
   }
 }
+*/

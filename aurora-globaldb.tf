@@ -1,3 +1,4 @@
+/*
 # Global Cluster
 resource "aws_rds_global_cluster" "globaldb" {
   global_cluster_identifier = "${var.project_name}-globaldb"
@@ -17,10 +18,9 @@ resource "aws_rds_cluster" "primary" {
 
   global_cluster_identifier = aws_rds_global_cluster.globaldb.id
 
+  database_name = var.db_name
   master_username = var.db_username
   master_password = var.db_password
-
-  database_name = var.db_name
 
   db_subnet_group_name   = aws_db_subnet_group.primary.name
   vpc_security_group_ids = [aws_security_group.aurora_sg.id]
@@ -30,6 +30,11 @@ resource "aws_rds_cluster" "primary" {
 
   storage_encrypted = true
   kms_key_id        = aws_kms_key.primary.arn
+
+  serverlessv2_scaling_configuration {
+    min_capacity = 0.5
+    max_capacity = 2
+  }
 
   skip_final_snapshot = true
 }
@@ -48,7 +53,7 @@ resource "aws_rds_cluster_instance" "primary_writer" {
 }
 
 # Primary Reader Instance
-resource "aws_rds_cluster_instance" "primary_reader" {
+ resource "aws_rds_cluster_instance" "primary_reader" {
   identifier         = "${var.project_name}-reader"
   cluster_identifier = aws_rds_cluster.primary.id
 
@@ -70,6 +75,11 @@ resource "aws_rds_cluster" "dr" {
   engine_version = var.engine_version
 
   global_cluster_identifier = aws_rds_global_cluster.globaldb.id
+
+  serverlessv2_scaling_configuration {
+    min_capacity = 0.5
+    max_capacity = 2
+  }
 
   db_subnet_group_name   = aws_db_subnet_group.dr.name
   vpc_security_group_ids = [aws_security_group.dr_aurora_sg.id]
@@ -111,3 +121,4 @@ resource "aws_kms_key" "dr" {
 
   description = "DR Aurora KMS key"
 }
+*/

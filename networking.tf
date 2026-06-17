@@ -53,7 +53,7 @@ resource "aws_subnet" "dr_private_b" {
   map_public_ip_on_launch = false
 }
 
-# create public subnet for bastion host
+# create public subnet-a (Use for bastion host and ALB)
 resource "aws_subnet" "public_a" {
   vpc_id                  = aws_vpc.primary.id
   cidr_block              = "10.10.100.0/24"
@@ -133,4 +133,51 @@ resource "aws_route_table_association" "dr_public_a" {
 
   subnet_id      = aws_subnet.dr_public_a.id
   route_table_id = aws_route_table.dr_public.id
+}
+
+# Public subnet-b for ALB
+resource "aws_subnet" "public_b" {
+  vpc_id                  = aws_vpc.primary.id
+  cidr_block              = "10.10.101.0/24"
+  availability_zone       = "ap-southeast-1b"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "public-subnet-b"
+  }
+}
+
+# DR public subnet-b for ALB
+resource "aws_subnet" "dr_public_b" {
+
+  provider = aws.dr
+
+  vpc_id                  = aws_vpc.dr.id
+  cidr_block              = "10.20.101.0/24"
+  availability_zone       = "ap-northeast-1c"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "dr-public-subnet-b"
+  }
+}
+
+# Create Private Route Table
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.primary.id
+
+  tags = {
+    Name = "${var.project_name}-private-rt"
+  }
+}
+
+# Associate Private Subnets
+resource "aws_route_table_association" "private_a" {
+  subnet_id      = aws_subnet.private_a.id
+  route_table_id = aws_route_table.private.id
+}
+
+resource "aws_route_table_association" "private_b" {
+  subnet_id      = aws_subnet.private_b.id
+  route_table_id = aws_route_table.private.id
 }

@@ -46,3 +46,17 @@ variable "db_instance_class" {
 variable "engine_version" {
   type = string
 }
+
+# DC container service
+variable "app_name" {
+  default = "dc-web-app"
+}
+
+# DR container service
+variable "dr_app_name" {
+  default = "dr-web-app"
+}
+
+variable "container_port" {
+  default = 3000
+}
