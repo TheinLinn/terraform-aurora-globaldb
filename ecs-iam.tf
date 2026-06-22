@@ -1,12 +1,13 @@
-# ECS Task Execution Role
+/*# ECS Task Execution Role
 # If not exist execution-role
-/*resource "aws_iam_role" "ecs_execution_role" {
+resource "aws_iam_role" "ecs_execution_role" {
   name = "test-ecs-execution-role"
   assume_role_policy = jsonencode({
     Version   = "2012-10-17"
     Statement = [{ Action = "sts:AssumeRole", Effect = "Allow", Principal = { Service = "ecs-tasks.amazonaws.com" } }]
   })
-}*/
+}
+*/
 
 # If already existed excution-role
 data "aws_iam_role" "ecs_execution_role" {

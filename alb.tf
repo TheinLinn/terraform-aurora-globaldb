@@ -57,6 +57,8 @@ resource "aws_lb_target_group" "dc_tg" {
 # Target Group for dr
 resource "aws_lb_target_group" "secondary_tg" {
 
+  provider = aws.dr
+
   name = "${var.project_name}-tg"
 
   port     = 3000
@@ -93,6 +95,8 @@ resource "aws_lb_listener" "http" {
 
 # Listener for dr
 resource "aws_lb_listener" "dr_http" {
+
+  provider = aws.dr
 
   load_balancer_arn = aws_lb.dr_alb.arn
 

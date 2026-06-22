@@ -39,7 +39,7 @@ resource "aws_route53_record" "dc_dns" {
   name    = "citytrust.com"
   type    = "A"
 
-  set_identifier = "singapore"
+  set_identifier = "mumbai"
 
   weighted_routing_policy {
     weight = 100
@@ -61,7 +61,7 @@ resource "aws_route53_record" "dr_dns" {
   name    = "citytrust.com"
   type    = "A"
 
-  set_identifier = "tokyo"
+  set_identifier = "osaka"
 
   weighted_routing_policy {
     weight = 0

@@ -1,11 +1,8 @@
 # Lambda IAM Role
-# If not exist lambda role, create role
-# >> resource "aws_iam_role" "lambda_role" {
-
-#If already exist lambda role, use existing role
-data "aws_iam_role" "lambda_role" {
-  name = "dr-failover-role"
-  /*  assume_role_policy = jsonencode({
+/*# If not exist lambda role, create role
+resource "aws_iam_role" "lambda_role" {
+  name = "failover-role"
+    assume_role_policy = jsonencode({
     Version = "2012-10-17"
 
     Statement = [{
@@ -17,8 +14,14 @@ data "aws_iam_role" "lambda_role" {
 
       Action = "sts:AssumeRole"
     }]
-  })*/
+  })
+}*/
+
+#If already exist lambda role, use existing role
+data "aws_iam_role" "lambda_role" {
+  name = "dr-failover-role"
 }
+
 
 # Lambda Policy
 # If not exist lambda role, create role
@@ -78,7 +81,7 @@ resource "aws_lambda_function" "failover" {
 
   handler = "failover.lambda_handler"
 
-  filename = "lambda/failover.zip"
+  filename = "${path.module}/lambda/failover.zip"
 }
 
 # SNS to Lambda Subscription

@@ -1,13 +1,13 @@
 # ECS Service for DC
-resource "aws_ecs_service" "dc-esc" {
+resource "aws_ecs_service" "dc_esc" {
 
   name = "${var.project_name}-service"
 
-  cluster = aws_ecs_cluster.dc-ecs-cluster.id
+  cluster = aws_ecs_cluster.dc_cluster.id
 
   task_definition = aws_ecs_task_definition.dc_taskdf.arn
 
-  desired_count = 2
+  desired_count = 1
 
   launch_type = "FARGATE"
 
@@ -29,9 +29,9 @@ resource "aws_ecs_service" "dc-esc" {
 
     target_group_arn = aws_lb_target_group.dc_tg.arn
 
-    container_name = var.app_name
+    container_name = "dc-web-App"
 
-    container_port = 3000
+    container_port = 80
   }
 
   depends_on = [
@@ -42,9 +42,11 @@ resource "aws_ecs_service" "dc-esc" {
 # ECS service for DR
 resource "aws_ecs_service" "dr_esc" {
 
+  provider = aws.dr
+
   name = "${var.project_name}-service-dr"
 
-  cluster = aws_ecs_cluster.dr-ecs-cluster.id
+  cluster = aws_ecs_cluster.dr_cluster.id
 
   task_definition = aws_ecs_task_definition.dr_taskdf.arn
 
@@ -70,9 +72,9 @@ resource "aws_ecs_service" "dr_esc" {
 
     target_group_arn = aws_lb_target_group.secondary_tg.arn
 
-    container_name = var.app_name
+    container_name = "dr-web-App"
 
-    container_port = 3000
+    container_port = 80
   }
 
   lifecycle {

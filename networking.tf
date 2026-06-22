@@ -57,7 +57,7 @@ resource "aws_subnet" "dr_private_b" {
 resource "aws_subnet" "public_a" {
   vpc_id                  = aws_vpc.primary.id
   cidr_block              = "10.10.100.0/24"
-  availability_zone       = "ap-southeast-1a"
+  availability_zone       = "ap-south-1a"
   map_public_ip_on_launch = true
 
   tags = {
@@ -96,7 +96,7 @@ resource "aws_subnet" "dr_public_a" {
 
   vpc_id                  = aws_vpc.dr.id
   cidr_block              = "10.20.100.0/24"
-  availability_zone       = "ap-northeast-1a"
+  availability_zone       = "ap-northeast-3a"
   map_public_ip_on_launch = true
 
   tags = {
@@ -139,7 +139,7 @@ resource "aws_route_table_association" "dr_public_a" {
 resource "aws_subnet" "public_b" {
   vpc_id                  = aws_vpc.primary.id
   cidr_block              = "10.10.101.0/24"
-  availability_zone       = "ap-southeast-1b"
+  availability_zone       = "ap-south-1b"
   map_public_ip_on_launch = true
 
   tags = {
@@ -154,7 +154,7 @@ resource "aws_subnet" "dr_public_b" {
 
   vpc_id                  = aws_vpc.dr.id
   cidr_block              = "10.20.101.0/24"
-  availability_zone       = "ap-northeast-1c"
+  availability_zone       = "ap-northeast-3c"
   map_public_ip_on_launch = true
 
   tags = {

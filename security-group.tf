@@ -128,6 +128,8 @@ resource "aws_security_group" "ecs_sg" {
 # ECS Security Group of DR
 resource "aws_security_group" "dr_ecs_sg" {
 
+  provider = aws.dr
+
   name = "${var.project_name}-ecs-sg-dr"
 
   vpc_id = aws_vpc.dr.id
@@ -186,6 +188,8 @@ resource "aws_security_group" "alb_sg" {
 # ALB Security Group for DR
 resource "aws_security_group" "dr_alb_sg" {
 
+provider = aws.dr
+
   name = "${var.project_name}-dr-alb-sg"
 
   vpc_id = aws_vpc.dr.id
@@ -238,7 +242,7 @@ resource "aws_security_group" "vpce_sg" {
 # ECR API Endpoint
 resource "aws_vpc_endpoint" "ecr_api" {
   vpc_id            = aws_vpc.primary.id
-  service_name      = "com.amazonaws.ap-southeast-1.ecr.api"
+  service_name      = "com.amazonaws.ap-south-1.ecr.api"
   vpc_endpoint_type = "Interface"
 
   subnet_ids = [
@@ -256,7 +260,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
 # ECR Docker Endpoint
 resource "aws_vpc_endpoint" "ecr_dkr" {
   vpc_id            = aws_vpc.primary.id
-  service_name      = "com.amazonaws.ap-southeast-1.ecr.dkr"
+  service_name      = "com.amazonaws.ap-south-1.ecr.dkr"
   vpc_endpoint_type = "Interface"
 
   subnet_ids = [
@@ -274,7 +278,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
 # S3 Gateway Endpoint(ECR image layar)
 resource "aws_vpc_endpoint" "s3" {
   vpc_id            = aws_vpc.primary.id
-  service_name      = "com.amazonaws.ap-southeast-1.s3"
+  service_name      = "com.amazonaws.ap-south-1.s3"
   vpc_endpoint_type = "Gateway"
 
   route_table_ids = [

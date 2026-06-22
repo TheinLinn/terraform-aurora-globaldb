@@ -1,4 +1,4 @@
-/*
+
 # Global Cluster
 resource "aws_rds_global_cluster" "globaldb" {
   global_cluster_identifier = "${var.project_name}-globaldb"
@@ -51,7 +51,7 @@ resource "aws_rds_cluster_instance" "primary_writer" {
 
   publicly_accessible = false
 }
-
+/*
 # Primary Reader Instance
  resource "aws_rds_cluster_instance" "primary_reader" {
   identifier         = "${var.project_name}-reader"
@@ -64,7 +64,7 @@ resource "aws_rds_cluster_instance" "primary_writer" {
 
   publicly_accessible = false
 }
-
+*/
 # DR Cluster
 resource "aws_rds_cluster" "dr" {
   provider = aws.dr
@@ -91,7 +91,7 @@ resource "aws_rds_cluster" "dr" {
 
   depends_on = [
     aws_rds_cluster_instance.primary_writer,
-    aws_rds_cluster_instance.primary_reader
+    # aws_rds_cluster_instance.primary_reader
   ]
 }
 
@@ -121,4 +121,3 @@ resource "aws_kms_key" "dr" {
 
   description = "DR Aurora KMS key"
 }
-*/
