@@ -11,11 +11,12 @@ phases:
     commands:
       - echo Build Docker image...
       - docker build -t 766037821005.dkr.ecr.ap-south-1.amazonaws.com/dc-web-app:$CODEBUILD_RESOLVED_SOURCE_VERSION -f dcdr-failover/Dockerfile dcdr-failover
-      - docker tag dc-web-app:v2:766037821005.dkr.ecr.ap-south-1.amazonaws.com/dc-web-app:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker tag dc-web-app:latest 766037821005.dkr.ecr.ap-south-1.amazonaws.com/dc-web-app:$CODEBUILD_RESOLVED_SOURCE_VERSION
   post_build:
     commands:
       - echo Push Docker image...
       - docker push 766037821005.dkr.ecr.ap-south-1.amazonaws.com/dc-web-app:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push 766037821005.dkr.ecr.ap-northeast-1.amazonaws.com/dr-web-app:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - echo Writing Image Definitoin file...
       - docker push 766037821005.dkr.ecr.ap-northeast-3.amazonaws.com/dr-web-app:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - printf '[{"name":"dc-web-App","imageUri":"%s"},{"name":"dr-web-App","imageUri":"%s"}]' \
