@@ -10,7 +10,7 @@ phases:
   build:
     commands:
       - echo Build Docker image...
-      - docker build -t $failover-app:v2:$CODEBUILD_RESOLVED_SOURCE_VERSION -f dcdr-failover/Dockerfile dcdr-failover
+      - docker build -t $766037821005.dkr.ecr.ap-south-1.amazonaws.com/failover-app :$CODEBUILD_RESOLVED_SOURCE_VERSION -f dcdr-failover/Dockerfile dcdr-failover
       - docker tag failover-app:v2 766037821005.dkr.ecr.ap-south-1.amazonaws.com/failover-app:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker tag failover-app:v2 766037821005.dkr.ecr.ap-northeast-3.amazonaws.com/failover-app:$CODEBUILD_RESOLVED_SOURCE_VERSION
   post_build:
