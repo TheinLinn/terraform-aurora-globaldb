@@ -9,6 +9,7 @@ data "aws_route53_zone" "hosted" {
   private_zone = false
 }*/
 
+
 # Primary health check monitors your main endpoint
 resource "aws_route53_health_check" "primary" {
   fqdn              = aws_lb.dc_alb.dns_name

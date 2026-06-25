@@ -13,28 +13,30 @@ resource "aws_cloudwatch_metric_alarm" "replication_lag" {
     DBClusterIdentifier = aws_rds_cluster.primary.cluster_identifier
   }
 }*/
+/*
+# Monitor DB connection health check
+resource "aws_cloudwatch_metric_alarm" "primary_db_connections" {
 
-# Monitor ALB/ECS health check
-resource "aws_cloudwatch_metric_alarm" "primary_unhealthy" {
+  alarm_name = "primary-db-no-connections"
 
-  alarm_name          = "primary-alb-unhealthy"
-  comparison_operator = "LessThanThreshold"
-  evaluation_periods  = 2
+  namespace   = "AWS/RDS"
+  metric_name = "DatabaseConnections"
 
-  metric_name = "HealthyHostCount"
-  namespace   = "AWS/ApplicationELB"
-
-  period    = 60
   statistic = "Average"
+
+  period = 60
+
+  evaluation_periods = 2
 
   threshold = 1
 
+  comparison_operator = "LessThanThreshold"
+
   dimensions = {
-    LoadBalancer = aws_lb.dc_alb.arn_suffix
-    TargetGroup  = aws_lb_target_group.dc_tg.arn_suffix
+    DBClusterIdentifier = aws_rds_cluster.primary.cluster_identifier
   }
 
-  alarm_actions = [ # updated by June-15
+  alarm_actions = [
     aws_sns_topic.dr_failover.arn
   ]
 }
@@ -67,3 +69,4 @@ resource "aws_cloudwatch_metric_alarm" "dc_dns_unhealthy" {
     aws_sns_topic.dr_failover.arn
   ]
 }
+*/

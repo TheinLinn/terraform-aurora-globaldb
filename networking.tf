@@ -167,7 +167,19 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.primary.id
 
   tags = {
-    Name = "${var.project_name}-private-rt"
+    Name = "${var.project_name}-primary-rt"
+  }
+}
+
+# Create Private Route Table for DR site
+resource "aws_route_table" "dr_private" {
+
+  provider = aws.dr
+
+  vpc_id = aws_vpc.dr.id
+
+  tags = {
+    Name = "${var.project_name}-dr-rt"
   }
 }
 

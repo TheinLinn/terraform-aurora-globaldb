@@ -15,7 +15,7 @@ variable "primary_region" {
 
 variable "dr_region" {
   type        = string
-  description = "DR AWS region"
+  description = "Secondary AWS region"
 }
 
 variable "primary_vpc_cidr" {
@@ -58,5 +58,9 @@ variable "dr_app_name" {
 }
 
 variable "container_port" {
-  default = 3000
+  default = 80
+}
+
+variable "region" {
+  default = "ap-south-1"
 }

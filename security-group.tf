@@ -188,7 +188,7 @@ resource "aws_security_group" "alb_sg" {
 # ALB Security Group for DR
 resource "aws_security_group" "dr_alb_sg" {
 
-provider = aws.dr
+  provider = aws.dr
 
   name = "${var.project_name}-dr-alb-sg"
 
@@ -283,5 +283,88 @@ resource "aws_vpc_endpoint" "s3" {
 
   route_table_ids = [
     aws_route_table.private.id
+  ]
+}
+
+# Security group that allows HTTPS from ECS tasks at DR site
+resource "aws_security_group" "dr_vpce_sg" {
+
+  provider = aws.dr
+
+  name        = "${var.project_name}dr-vpce-sg"
+  description = "Security group for DR-VPC endpoints"
+  vpc_id      = aws_vpc.dr.id
+
+  ingress {
+    from_port = 443
+    to_port   = 443
+    protocol  = "tcp"
+
+    security_groups = [
+      aws_security_group.dr_ecs_sg.id
+    ]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# ECR API Endpoint at DR site
+resource "aws_vpc_endpoint" "dr_ecr_api" {
+
+  provider = aws.dr
+
+  vpc_id            = aws_vpc.dr.id
+  service_name      = "com.amazonaws.ap-northeast-3.ecr.api"
+  vpc_endpoint_type = "Interface"
+
+  subnet_ids = [
+    aws_subnet.dr_private_a.id,
+    aws_subnet.dr_private_b.id
+  ]
+
+  security_group_ids = [
+    aws_security_group.dr_vpce_sg.id
+  ]
+
+  private_dns_enabled = true
+}
+
+# ECR Docker Endpoint at DR site
+resource "aws_vpc_endpoint" "dr_ecr_dkr" {
+
+  provider = aws.dr
+
+  vpc_id            = aws_vpc.dr.id
+  service_name      = "com.amazonaws.ap-northeast-3.ecr.dkr"
+  vpc_endpoint_type = "Interface"
+
+  subnet_ids = [
+    aws_subnet.dr_private_a.id,
+    aws_subnet.dr_private_b.id
+  ]
+
+  security_group_ids = [
+    aws_security_group.dr_vpce_sg.id
+  ]
+
+  private_dns_enabled = true
+}
+
+# S3 Gateway Endpoint(ECR image layar) at DR site
+resource "aws_vpc_endpoint" "dr_s3" {
+
+  provider = aws.dr
+
+  vpc_id            = aws_vpc.dr.id
+  service_name      = "com.amazonaws.ap-northeast-3.s3"
+  vpc_endpoint_type = "Gateway"
+
+  route_table_ids = [
+    aws_route_table.dr_private.id
   ]
 }

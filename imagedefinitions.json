@@ -1,0 +1,10 @@
+[
+  {
+    "name": "dc-web-App",
+    "imageUri": "766037821005.dkr.ecr.ap-south-1.amazonaws.com/failover-app:commitSHA"
+  },
+  {
+    "name": "dr-web-App",
+    "imageUri": "766037821005.dkr.ecr.ap-northeast-3.amazonaws.com/failover-app:commitSHA"
+  }
+]

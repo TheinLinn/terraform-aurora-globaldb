@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "dc_taskdf" {
     {
       name = "dc-web-App"
 
-      image = "${aws_ecr_repository.app.repository_url}:latest"
+      image = "${aws_ecr_repository.app.repository_url}:v1"
 
       essential = true
 
@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "dc_taskdf" {
         {
           containerPort = 80
           hostPort      = 80
-          
+
         }
       ]
     }
@@ -51,7 +51,7 @@ resource "aws_ecs_task_definition" "dr_taskdf" {
     {
       name = "dr-web-App"
 
-      image = "${aws_ecr_repository.app.repository_url}:latest"
+      image = "${aws_ecr_repository.app.repository_url}:v1"
 
       essential = true
 
@@ -59,7 +59,7 @@ resource "aws_ecs_task_definition" "dr_taskdf" {
         {
           containerPort = 80
           hostPort      = 80
-          
+
         }
       ]
     }

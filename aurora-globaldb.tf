@@ -1,4 +1,5 @@
 
+/*
 # Global Cluster
 resource "aws_rds_global_cluster" "globaldb" {
   global_cluster_identifier = "${var.project_name}-globaldb"
@@ -18,7 +19,7 @@ resource "aws_rds_cluster" "primary" {
 
   global_cluster_identifier = aws_rds_global_cluster.globaldb.id
 
-  database_name = var.db_name
+  database_name   = var.db_name
   master_username = var.db_username
   master_password = var.db_password
 
@@ -65,6 +66,7 @@ resource "aws_rds_cluster_instance" "primary_writer" {
   publicly_accessible = false
 }
 */
+/*
 # DR Cluster
 resource "aws_rds_cluster" "dr" {
   provider = aws.dr
@@ -121,3 +123,4 @@ resource "aws_kms_key" "dr" {
 
   description = "DR Aurora KMS key"
 }
+*/
